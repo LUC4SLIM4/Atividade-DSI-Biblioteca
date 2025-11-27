@@ -1,0 +1,51 @@
+@model AutorViewModel
+
+@{
+    ViewData["Title"] = "Excluir Autor";
+}
+
+<h1><i class="bi bi-trash"></i> Excluir Autor</h1>
+
+<div class="alert alert-danger mt-3">
+    <h4>Tem certeza que deseja excluir este autor?</h4>
+    <p>Esta ação não pode ser desfeita.</p>
+    @if (Model.QuantidadeLivros > 0)
+    {
+        <p><strong>Atenção:</strong> Este autor possui @Model.QuantidadeLivros livro(s) cadastrado(s). Todos os livros também serão excluídos.</p>
+    }
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <dl class="row">
+            <dt class="col-sm-3">Nome</dt>
+            <dd class="col-sm-9">@Model.Nome</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Data de Nascimento</dt>
+            <dd class="col-sm-9">@Model.DataNascimento.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-3">Nacionalidade</dt>
+            <dd class="col-sm-9">@Model.Nacionalidade</dd>
+
+            <dt class="col-sm-3">Quantidade de Livros</dt>
+            <dd class="col-sm-9">
+                <span class="badge bg-primary">@Model.QuantidadeLivros</span>
+            </dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Confirmar Exclusão
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Cancelar
+            </a>
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,65 @@
+@{
+    ViewData["Title"] = "Página Inicial";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bem-vindo ao Sistema de Biblioteca</h1>
+    <p class="lead">Sistema de gerenciamento de autores e livros desenvolvido com Clean Architecture e DDD</p>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6 mb-4">
+        <div class="card text-center shadow">
+            <div class="card-body">
+                <i class="bi bi-person-circle display-1 text-primary"></i>
+                <h5 class="card-title mt-3">Autores</h5>
+                <p class="card-text">Total de autores cadastrados: <strong>@ViewBag.TotalAutores</strong></p>
+                <a asp-controller="Autores" asp-action="Index" class="btn btn-primary">
+                    <i class="bi bi-list"></i> Ver Autores
+                </a>
+                <a asp-controller="Autores" asp-action="Create" class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i> Novo Autor
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card text-center shadow">
+            <div class="card-body">
+                <i class="bi bi-book display-1 text-success"></i>
+                <h5 class="card-title mt-3">Livros</h5>
+                <p class="card-text">Total de livros cadastrados: <strong>@ViewBag.TotalLivros</strong></p>
+                <a asp-controller="Livros" asp-action="Index" class="btn btn-primary">
+                    <i class="bi bi-list"></i> Ver Livros
+                </a>
+                <a asp-controller="Livros" asp-action="Create" class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i> Novo Livro
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Recursos Implementados</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Clean Architecture com 4 camadas (Domínio, Aplicação, Infraestrutura, Apresentação)</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Domain-Driven Design (DDD)</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Relacionamento 1:N (Autor → Livros)</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Entity Framework Core com SQL Server</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Mapeamento com Mapster</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> CRUD completo para todas as entidades</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Validações personalizadas (Data de Nascimento e ISBN)</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Busca dinâmica com AJAX</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Injeção de Dependências (DI/IoC)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

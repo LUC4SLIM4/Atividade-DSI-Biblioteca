@@ -1,0 +1,44 @@
+@model AutorViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Autor";
+}
+
+<h1><i class="bi bi-eye"></i> Detalhes do Autor</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <dl class="row">
+            <dt class="col-sm-3">Nome</dt>
+            <dd class="col-sm-9">@Model.Nome</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Data de Nascimento</dt>
+            <dd class="col-sm-9">@Model.DataNascimento.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-3">Nacionalidade</dt>
+            <dd class="col-sm-9">@Model.Nacionalidade</dd>
+
+            <dt class="col-sm-3">Quantidade de Livros</dt>
+            <dd class="col-sm-9">
+                <span class="badge bg-primary">@Model.QuantidadeLivros</span>
+            </dd>
+
+            <dt class="col-sm-3">Data de Cadastro</dt>
+            <dd class="col-sm-9">@Model.DataCriacao.ToString("dd/MM/yyyy HH:mm")</dd>
+        </dl>
+
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Voltar
+            </a>
+        </div>
+    </div>
+</div>
+

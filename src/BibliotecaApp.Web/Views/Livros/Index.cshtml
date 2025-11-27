@@ -1,0 +1,136 @@
+@model IEnumerable<LivroViewModel>
+
+@{
+    ViewData["Title"] = "Livros";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1><i class="bi bi-book"></i> Livros</h1>
+    <a asp-action="Create" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Novo Livro
+    </a>
+</div>
+
+<div class="card shadow mb-3">
+    <div class="card-body">
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control" id="searchInput" placeholder="Buscar por título, ISBN, gênero ou autor..." />
+        </div>
+        <small class="text-muted">A busca é realizada dinamicamente sem recarregar a página</small>
+    </div>
+</div>
+
+<div id="resultadosBusca">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Nenhum livro cadastrado.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Título</th>
+                        <th>ISBN</th>
+                        <th>Autor</th>
+                        <th>Ano</th>
+                        <th>Gênero</th>
+                        <th>Preço</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var livro in Model)
+                    {
+                        <tr>
+                            <td>@livro.Titulo</td>
+                            <td><code>@livro.ISBN</code></td>
+                            <td>@livro.AutorNome</td>
+                            <td>@livro.AnoPublicacao</td>
+                            <td><span class="badge bg-secondary">@livro.Genero</span></td>
+                            <td>@livro.Preco.ToString("C")</td>
+                            <td class="text-center">
+                                <a asp-action="Details" asp-route-id="@livro.Id" class="btn btn-sm btn-info" title="Detalhes">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@livro.Id" class="btn btn-sm btn-warning" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@livro.Id" class="btn btn-sm btn-danger" title="Excluir">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            let timeoutId;
+            
+            $('#searchInput').on('keyup', function () {
+                clearTimeout(timeoutId);
+                const searchTerm = $(this).val();
+                
+                timeoutId = setTimeout(function () {
+                    $.ajax({
+                        url: '@Url.Action("Search", "Livros")',
+                        type: 'GET',
+                        data: { searchTerm: searchTerm },
+                        success: function (data) {
+                            atualizarResultados(data);
+                        },
+                        error: function () {
+                            alert('Erro ao realizar a busca.');
+                        }
+                    });
+                }, 300);
+            });
+
+            function atualizarResultados(livros) {
+                if (livros.length === 0) {
+                    $('#resultadosBusca').html(
+                        '<div class="alert alert-warning">' +
+                        '<i class="bi bi-exclamation-triangle"></i> Nenhum livro encontrado.' +
+                        '</div>'
+                    );
+                    return;
+                }
+
+                let html = '<div class="table-responsive"><table class="table table-striped table-hover">';
+                html += '<thead class="table-dark"><tr>';
+                html += '<th>Título</th><th>ISBN</th><th>Autor</th><th>Ano</th><th>Gênero</th><th>Preço</th><th class="text-center">Ações</th>';
+                html += '</tr></thead><tbody>';
+
+                livros.forEach(function (livro) {
+                    const preco = livro.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    html += '<tr>';
+                    html += '<td>' + livro.titulo + '</td>';
+                    html += '<td><code>' + livro.isbn + '</code></td>';
+                    html += '<td>' + (livro.autorNome || '') + '</td>';
+                    html += '<td>' + livro.anoPublicacao + '</td>';
+                    html += '<td><span class="badge bg-secondary">' + livro.genero + '</span></td>';
+                    html += '<td>' + preco + '</td>';
+                    html += '<td class="text-center">';
+                    html += '<a href="/Livros/Details/' + livro.id + '" class="btn btn-sm btn-info" title="Detalhes"><i class="bi bi-eye"></i></a> ';
+                    html += '<a href="/Livros/Edit/' + livro.id + '" class="btn btn-sm btn-warning" title="Editar"><i class="bi bi-pencil"></i></a> ';
+                    html += '<a href="/Livros/Delete/' + livro.id + '" class="btn btn-sm btn-danger" title="Excluir"><i class="bi bi-trash"></i></a>';
+                    html += '</td></tr>';
+                });
+
+                html += '</tbody></table></div>';
+                $('#resultadosBusca').html(html);
+            }
+        });
+    </script>
+}
+
